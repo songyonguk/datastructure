@@ -1,0 +1,242 @@
+//////////////////////////////////////////
+//Lab6
+//Name: 송용욱
+//ID : 20170711
+//////////////////////////////////////////
+#include <stdio.h>
+#include <iostream>
+#include <fstream>
+#include <string>
+#include<stdlib.h>
+using namespace std;
+
+/*typedef struct Node
+{
+    int data;
+    struct Node* nextNode;
+} Node;
+class SSL
+{
+private:
+    Node *head, *tail;
+public:
+    SSL()
+    {
+        head = NULL;
+        tail = NULL;
+    }
+    //create node
+    void createNode(int data)
+    {
+        Node *newNode = new Node;
+        newNode->data = data;
+        newNode->nextNode = NULL;
+        if(head == NULL)
+        {
+            head = newNode;
+            tail = newNode;
+        }
+        else
+        {
+            tail->nextNode = newNode;
+            tail = newNode;
+        }
+    }
+    //destroy node
+    void destroyNode(Node *removedNode)
+    {
+        delete removedNode;
+    }
+    //get node
+    void FindValue(Node* FindValue)
+    {
+        Node* temp = head->nextNode;		//찾는 노드
+        while (temp != tail)			//리스트를 끝까지 돈다
+        {
+            if (temp->data == value)	//특정 값을 가진 노드를 찾았으면
+            {
+                printf("Find Value Data : %d \n", temp->data);
+                		//노드를 반환한다.
+            }
+            temp = temp->nextNode;		//못 찾았으면 다음 노드로
+        }
+        				//끝까지 돌았는데 없으면 꼬리 노드 반환
+    }
+    void deleteNode(Node *deletedNode)
+    {
+        if(head == deletedNode)
+        {
+            head = head->nextNode;
+        }
+        else
+        {
+            Node* current = head;
+            while(current != NULL && current->nextNode != deletedNode)
+            {
+                current = current->nextNode;
+            }
+            current->nextNode = deletedNode->nextNode;
+        }
+        destroyNode(deletedNode);
+    }
+    //show node
+    void showNode()
+    {
+        Node *current = head;
+        cout<<"PRINT CURRNET NODES"<<endl;
+        cout<<"==================="<<endl;
+        while(current != NULL)
+        {
+            cout << current->data << "\t";
+            current = current->nextNode;
+        }
+        cout<<endl<<"==================="<<endl;
+    }
+};*/
+#include <iostream>
+
+struct Node {
+    int data;
+    Node * next;
+};
+
+Node * list;
+
+void init() {
+
+    if (list == NULL) {
+        return;
+    }
+    else {
+        Node * cur;
+        cur = list;
+
+        while (cur != NULL) {
+            list = cur->next;
+            free(cur);
+            cur = list;
+        }
+    }
+}
+
+void ascadd(int key) {
+
+    Node * new_node = (Node*)malloc(sizeof(Node));
+    new_node->data = key;
+    new_node->next = NULL;
+
+    if (list == NULL) {
+        list = new_node;
+    }
+    else {
+
+        Node * cur = list;
+        Node * prev = NULL;
+
+        if (cur->data > new_node->data) {
+            new_node->next = cur;
+            list = new_node;
+        }
+        else {
+            while (cur != NULL && cur->data < new_node->data) {
+                prev = cur;
+                cur = cur->next;
+            }
+            if (cur != NULL) {
+                new_node->next = cur;
+                prev->next = new_node;
+            }
+                // Add to end
+            else {
+                prev->next = new_node;
+            }
+        }
+    }
+}
+Node* FindValue(int value)
+{
+    Node* temp = cur->next;		//찾는 노드
+    while (temp != tail)			//리스트를 끝까지 돈다
+    {
+        if (temp->data == value)	//특정 값을 가진 노드를 찾았으면
+        {
+            printf("Find Value Data : %d \n", temp->data);
+            return temp;		//노드를 반환한다.
+        }
+        temp = temp->next;		//못 찾았으면 다음 노드로
+    }
+    return temp;				//끝까지 돌았는데 없으면 꼬리 노드 반환
+}
+Node* FindMax(int value)
+{
+    Node* temp = cur->next;		//찾는 노드
+    while (temp != tail)			//리스트를 끝까지 돈다
+    {
+        if (temp->data == value)	//특정 값을 가진 노드를 찾았으면
+        {
+            printf("Find Value Data : %d \n", temp->data);
+            return temp;		//노드를 반환한다.
+        }
+        temp = temp->next;		//못 찾았으면 다음 노드로
+    }
+    return temp;				//끝까지 돌았는데 없으면 꼬리 노드 반환
+}
+void PrintList()
+{
+    Node* temp = head->next;			//찾는 노드
+    while (temp != tail)				//리스트 끝까지 돈다.
+    {
+        printf("%d \n", temp->data);		//메세지 출력
+        temp = temp->next;			//다음 노드로
+    }
+    printf("size : %d \n", size);			//크기도 출력
+}
+
+bool remove(int key) {
+
+    if (list == NULL) {
+        return false;
+    }
+
+    if (list->data == key) {
+        Node * cur = list;
+        list = list->next;
+        free(cur);
+        return true;
+    }
+    else {
+        Node * cur = list->next;
+        Node * prev = list;
+        while (cur != NULL && cur->data != key) {
+            prev = cur;
+            cur = cur->next;
+        }
+
+        if (cur == NULL) return false;
+
+        prev->next = cur->next;
+        free(cur);
+        return true;
+    }
+}
+
+int main(int argc, const char * argv[]) {
+    int number; int method; int pos;
+    while(1) {
+        cout << "Command : 1)insert, 2)delete, 3)search, 4)findMax 5)quit =>";
+        cin >> method;
+        if(method == 1) {
+            cout << "Input a number =>";
+            cin >> number;
+            ascadd(number);
+        }
+        else if(method == 2) remove(number);
+        else if(method == 3) FindValue(number);
+        else if(method == 4) FindMax(number);
+        else{
+            break;
+        }
+    }
+    return 0;
+}
+    
